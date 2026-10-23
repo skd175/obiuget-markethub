@@ -4,7 +4,8 @@
   "description": "Node.js &amp; Express e-commerce platform with Paystack integration",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,10 @@
   },
   "homepage": "https://github.com/skd175/obiuget-markethub#readme",
   "dependencies": {
+    "body-parser": "^2.4.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
+    "ejs": "^7.0.2",
     "express": "^5.3.0"
   }
 }

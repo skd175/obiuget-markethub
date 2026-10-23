@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ObiUgo MarketHub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- QRCode JS Library via CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans pb-24">
@@ -18,7 +17,7 @@
                 <input 
                     type="text" 
                     id="searchInput" 
-                    placeholder="Search 30+ products on ObiUgo..." 
+                    placeholder="Search products on ObiUgo..." 
                     class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                     oninput="filterProducts()"
                 >
@@ -314,7 +313,6 @@
         let currentOrderId = '';
         let qrInitialized = false;
 
-        // Flash Sale Countdown Timer logic
         let totalSeconds = 4 * 3600 + 12 * 60 + 35;
         setInterval(() => {
             if (totalSeconds > 0) totalSeconds--;
