@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ObiUgo MarketHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans pb-24">
+
+    <!-- Top Search Header -->
+    <header class="bg-white p-3 shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto max-w-md flex items-center gap-2">
+            <div class="relative flex-grow">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🔍</span>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search products on ObiUgo..." 
+                    class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    oninput="filterProducts()"
+                >
+            </div>
+            <button onclick="toggleAdminPanel()" class="bg-orange-500 text-white px-3 py-2 rounded-full text-xs font-bold shadow">⚙️ Admin</button>
+        </div>
+    </header>
+
+    <!-- Main Container Views -->
+    <main class="container mx-auto p-3 max-w-md space-y-4">
+
+        <!-- ADMIN PANEL MODAL -->
+        <div id="adminPanel" class="hidden bg-white p-4 border rounded-2xl shadow-md">
+            <h2 class="font-bold text-base mb-3 text-orange-600">➕ Add Product & Snap Photo</h2>
+            <form id="addProductForm" onsubmit="addProduct(event)" class="space-y-2.5 text-sm">
+                <input type="text" id="prodName" placeholder="Product Name" required class="w-full p-2 border rounded-lg">
+                <input type="number" id="prodPrice" placeholder="Current Price (₦)" required class="w-full p-2 border rounded-lg">
+                <input type="number" id="prodOldPrice" placeholder="Old Price (₦) - Optional" class="w-full p-2 border rounded-lg">
+                <input type="text" id="prodDiscount" placeholder="Discount Tag (e.g. -30%)" class="w-full p-2 border rounded-lg">
+                <select id="prodCategory" class="w-full p-2 border rounded-lg bg-white">
+                    <option value="phones">Phones & Tablets</option>
+                    <option value="electronics">Electronics & TVs</option>
+                    <option value="computing">Computing & Office</option>
+                    <option value="home">Home & Solar</option>
+                    <option value="beauty">Health & Beauty</option>
+                    <option value="accessories">Mobile Accessories</option>
+                </select>
+                <textarea id="prodDesc" placeholder="Description" class="w-full p-2 border rounded-lg"></textarea>
+                
+                <div class="space-y-1">
+                    <label class="text-xs text-gray-500 font-medium">Upload Image (Snap Photo or Select File):</label>
+                    <input type="file" id="prodImageFile" accept="image/*" class="w-full p-1.5 border rounded-lg text-xs bg-gray-50">
+                </div>
+
+                <button type="submit" class="w-full bg-orange-500 text-white font-bold py-2 rounded-lg shadow">Publish to Store</button>
+            </form>
+        </div>
+
+        <!-- TAB 1: HOME VIEW -->
+        <div id="tab-home" class="space-y-4">
+            
+            <!-- Verified Vendor Trust Banner -->
+            <div class="bg-white border border-orange-200 p-2.5 rounded-xl shadow-sm flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🛡️</span>
+                    <div>
+                        <p class="font-bold text-gray-900">Official ObiUgo Verified Store</p>
+                        <p class="text-[10px] text-gray-500">Awka & Igbariam, Anambra State</p>
+                    </div>
+                </div>
+                <button onclick="openQRModal()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px] shadow">
+                    📱 Scan QR
+                </button>
+            </div>
+
+            <!-- Promotional Ad Banner with Countdown Timer -->
+            <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-4 shadow-md space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="bg-orange-500 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Mega Deals</span>
+                    <div class="bg-black/30 px-2.5 py-1 rounded-lg text-xs font-mono font-bold tracking-wider flex items-center gap-1">
+                        ⏱️ <span id="countdownTimer">04:12:35</span>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="font-bold text-lg">Flash Sales & Solar Backup</h2>
+                    <p class="text-xs text-blue-100">Unfold Life's Best Moments with ObiUgo</p>
+                </div>
+            </section>
+
+            <!-- Category Circles -->
+            <section class="bg-white p-4 rounded-2xl shadow-sm">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">All Your Essentials in One Place</h2>
+                <div class="grid grid-cols-4 gap-3 text-center text-xs">
+                    <div onclick="switchCategory('phones')" class="cursor-pointer flex flex-col items-center">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">📱</div>
+                        <span>Phones</span>
+                    </div>
+                    <div onclick="switchCategory('electronics')" class="cursor-pointer flex flex-col items-center">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">📺</div>
+                        <span>Electronics</span>
+                    </div>
+                    <div onclick="switchCategory('computing')" class="cursor-pointer flex flex-col items-center">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">💻</div>
+                        <span>Computing</span>
+                    </div>
+                    <div onclick="switchCategory('home')" class="cursor-pointer flex flex-col items-center">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">⚡</div>
+                        <span>Home & Solar</span>
+                    </div>
+                    <div onclick="switchCategory('beauty')" class="cursor-pointer flex flex-col items-center mt-2">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">💄</div>
+                        <span>Beauty</span>
+                    </div>
+                    <div onclick="switchCategory('accessories')" class="cursor-pointer flex flex-col items-center mt-2">
+                        <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">🔌</div>
+                        <span>Accessories</span>
+                    </div>
+                    <div onclick="switchCategory('all')" class="cursor-pointer flex flex-col items-center mt-2">
+                        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">✨</div>
+                        <span>All Items</span>
+                    </div>
+                    <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20send%20a%20package." target="_blank" class="cursor-pointer flex flex-col items-center mt-2">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center text-2xl shadow-sm mb-1">🚚</div>
+                        <span>Delivery</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Top Deals Header -->
+            <section class="bg-gray-800 text-white p-3 rounded-2xl flex justify-between items-center shadow-sm">
+                <div>
+                    <h2 class="font-bold text-sm">🔥 Top Deals & Best Sellers</h2>
+                    <p class="text-xs text-gray-300">Order directly via WhatsApp</p>
+                </div>
+                <span class="bg-orange-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Live Catalog</span>
+            </section>
+
+            <!-- Product Grid -->
+            <div id="productList" class="grid grid-cols-2 gap-3"></div>
+
+            <!-- Recently Viewed Section -->
+            <div id="recentlyViewedSection" class="hidden space-y-2 pt-4 border-t">
+                <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500">Recently Viewed Products</h3>
+                <div id="recentList" class="flex gap-3 overflow-x-auto pb-2"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: CATEGORIES VIEW -->
+        <div id="tab-categories" class="hidden space-y-3">
+            <h2 class="font-bold text-base text-gray-800 mb-2">Explore Categories</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="switchCategory('phones'); switchTab('home')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer">
+                    <span class="text-2xl">📱</span>
+                    <div><h3 class="font-bold text-sm">Phones & Tablets</h3><p class="text-[10px] text-gray-500">Galaxy & Android</p></div>
+                </div>
+                <div onclick="switchCategory('electronics'); switchTab('home')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer">
+                    <span class="text-2xl">📺</span>
+                    <div><h3 class="font-bold text-sm">Electronics</h3><p class="text-[10px] text-gray-500">Smart TVs & Audio</p></div>
+                </div>
+                <div onclick="switchCategory('computing'); switchTab('home')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer">
+                    <span class="text-2xl">💻</span>
+                    <div><h3 class="font-bold text-sm">Computing</h3><p class="text-[10px] text-gray-500">Laptops & Chairs</p></div>
+                </div>
+                <div onclick="switchCategory('home'); switchTab('home')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer">
+                    <span class="text-2xl">⚡</span>
+                    <div><h3 class="font-bold text-sm">Home & Solar</h3><p class="text-[10px] text-gray-500">Generators & Rugs</p></div>
+                </div>
+                <div onclick="switchCategory('beauty'); switchTab('home')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer">
+                    <span class="text-2xl">💄</span>
+                    <div><h3 class="font-bold text-sm">Health & Beauty</h3><p class="text-[10px] text-gray-500">Wigs & Hair Cream</p></div>
+                </div>
+                <div onclick="switchCategory('accessories'); switchTab('home')" class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 cursor-pointer">
+                    <span class="text-2xl">🔌</span>
+                    <div><h3 class="font-bold text-sm">Accessories</h3><p class="text-[10px] text-gray-500">Cables & Power Banks</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SHOPPING CART VIEW WITH PROMO CODE BOX -->
+        <div id="tab-cart" class="hidden space-y-3">
+            <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
+                <h2 class="font-bold text-base text-gray-900 border-b pb-2">🛒 Your Shopping Cart</h2>
+                <div id="cartItemsList" class="space-y-3 divide-y"></div>
+                
+                <!-- Promo Code Box -->
+                <div id="promoSection" class="hidden pt-3 border-t space-y-2">
+                    <div class="flex gap-2">
+                        <input type="text" id="couponInput" placeholder="Enter Voucher (e.g. OBI2026)" class="flex-grow p-2 border rounded-lg text-xs uppercase">
+                        <button onclick="applyCoupon()" class="bg-gray-800 text-white px-3 py-2 rounded-lg text-xs font-bold">Apply</button>
+                    </div>
+                    <p id="couponMsg" class="text-[10px] text-emerald-600 font-semibold hidden"></p>
+                </div>
+
+                <div id="cartSummary" class="hidden pt-3 border-t space-y-3">
+                    <div class="flex justify-between font-bold text-sm">
+                        <span>Total Amount:</span>
+                        <span id="cartTotalPrice" class="text-orange-600">₦0</span>
+                    </div>
+                    <button onclick="prepareCheckout()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm shadow transition">
+                        Proceed to Checkout 📱
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: WISHLIST VIEW -->
+        <div id="tab-wishlist" class="hidden bg-white p-6 rounded-2xl shadow-sm text-center space-y-4">
+            <span class="text-5xl">❤️</span>
+            <h2 class="font-bold text-lg">Your Wishlist</h2>
+            <p class="text-xs text-gray-500">Save items you love and order them whenever you're ready.</p>
+            <button onclick="switchTab('home')" class="bg-orange-500 text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow">Browse Products</button>
+        </div>
+
+        <!-- TAB 5: ACCOUNT VIEW (Obinna's Profile) -->
+        <div id="tab-account" class="hidden space-y-3">
+            <div class="bg-white p-4 rounded-2xl shadow-sm space-y-1">
+                <h2 class="font-bold text-base text-gray-900">Welcome Obinna!</h2>
+                <p class="text-xs text-orange-600 font-medium">obinnaokeke6267@gmail.com</p>
+            </div>
+
+            <!-- QR Code Button in Account -->
+            <div onclick="openQRModal()" class="bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:bg-gray-50">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">📷</span>
+                    <div>
+                        <p class="font-bold text-sm text-gray-900">Store QR Code</p>
+                        <p class="text-[10px] text-gray-500">Show QR code for customers to scan</p>
+                    </div>
+                </div>
+                <span class="text-orange-500 font-bold">&rsaquo;</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-gray-500">ObiUgo Store Credit Balance</p>
+                    <p class="font-bold text-lg text-gray-900">₦0</p>
+                </div>
+                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-bold">Active Wallet</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl shadow-sm grid grid-cols-2 gap-3">
+                <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20need%20assistance." target="_blank" class="bg-orange-500 text-white text-center py-2.5 rounded-xl font-bold text-xs shadow">Live Chat</a>
+                <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20order." target="_blank" class="bg-emerald-600 text-white text-center py-2.5 rounded-xl font-bold text-xs shadow">WhatsApp</a>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm divide-y text-xs">
+                <div onclick="alert('No pending orders yet.')" class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50"><span class="font-medium">📦 Orders</span><span>&rsaquo;</span></div>
+                <div onclick="alert('Inbox is empty.')" class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50"><span class="font-medium">✉️ Inbox</span><span>&rsaquo;</span></div>
+                <div onclick="alert('No vouchers available.')" class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50"><span class="font-medium">🎟️ Vouchers</span><span>&rsaquo;</span></div>
+                <div onclick="switchTab('wishlist')" class="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50"><span class="font-medium">❤️ Wishlist</span><span>&rsaquo;</span></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCAN QR CODE MODAL -->
+    <div id="qrModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 text-center shadow-xl">
+            <h3 class="font-bold text-base text-gray-900">Scan to Visit ObiUgo MarketHub</h3>
+            <p class="text-xs text-gray-500">Point any phone camera at this QR code to open your store instantly.</p>
+            <div id="qrcode" class="flex justify-center p-3 bg-gray-50 border rounded-xl"></div>
+            <p id="storeUrlDisplay" class="text-[10px] font-mono text-gray-600 bg-gray-100 p-2 rounded break-all"></p>
+            <button onclick="closeQRModal()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-xl text-xs shadow">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- ORDER CONFIRMATION MODAL -->
+    <div id="checkoutModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 text-center shadow-xl">
+            <span class="text-4xl">🎉</span>
+            <h3 class="font-bold text-lg text-gray-900">Order Prepared Successfully!</h3>
+            <div class="bg-orange-50 border border-orange-200 p-2.5 rounded-xl text-xs font-mono font-bold text-orange-700">
+                Order Ref: <span id="modalOrderId">#OBI-00000</span>
+            </div>
+            <p class="text-xs text-gray-600">Tap below to send your compiled order receipt and reference code directly to ObiUgo on WhatsApp.</p>
+            <div class="space-y-2 pt-2">
+                <button onclick="confirmAndSendWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm shadow">
+                    Send to WhatsApp Now 📱
+                </button>
+                <button onclick="closeCheckoutModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 rounded-xl text-xs">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING WHATSAPP CHAT BUTTON -->
+    <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20have%20an%20inquiry%20about%20your%20store." target="_blank" class="fixed bottom-20 right-4 bg-emerald-500 hover:bg-emerald-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg text-2xl z-40 transition transform hover:scale-105">
+        💬
+    </a>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 py-2 px-6 flex justify-between items-center text-xs text-gray-600 z-50 max-w-md mx-auto shadow-lg">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-orange-500 font-bold"><span class="text-xl">🏠</span> Home</button>
+        <button onclick="switchTab('categories')" id="nav-categories" class="flex flex-col items-center hover:text-orange-500"><span class="text-xl">📂</span> Categories</button>
+        <button onclick="switchTab('cart')" id="nav-cart" class="flex flex-col items-center hover:text-orange-500 relative">
+            <span class="text-xl">🛒</span> Cart
+            <span id="cartBadge" class="absolute -top-1 right-1 bg-red-500 text-white text-[10px] px-1.5 rounded-full hidden">0</span>
+        </button>
+        <button onclick="switchTab('wishlist')" id="nav-wishlist" class="flex flex-col items-center hover:text-orange-500"><span class="text-xl">❤️</span> Wishlist</button>
+        <button onclick="switchTab('account')" id="nav-account" class="flex flex-col items-center hover:text-orange-500"><span class="text-xl">👤</span> Account</button>
+    </nav>
+
+    <script>
+        const WHATSAPP_NUMBER = "2348154126561";
+        let allProducts = [];
+        let currentCategory = 'all';
+        let cart = [];
+        let recentlyViewed = [];
+        let discountMultiplier = 1;
+        let currentOrderId = '';
+        let qrInitialized = false;
+
+        let totalSeconds = 4 * 3600 + 12 * 60 + 35;
+        setInterval(() => {
+            if (totalSeconds > 0) totalSeconds--;
+            let h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            let m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            let s = (totalSeconds % 60).toString().padStart(2, '0');
+            const timerEl = document.getElementById('countdownTimer');
+            if (timerEl) timerEl.innerText = `${h}:${m}:${s}`;
+        }, 1000);
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch('/api/products');
+                allProducts = await response.json();
+                displayProducts(allProducts);
+            } catch (err) {
+                console.error('Error fetching products:', err);
+            }
+        }
+
+        function displayProducts(products) {
+            const productList = document.getElementById('productList');
+            productList.innerHTML = '';
+
+            let filtered = products;
+            if (currentCategory !== 'all') {
+                filtered = products.filter(p => p.category === currentCategory);
+            }
+
+            if (filtered.length === 0) {
+                productList.innerHTML = `<p class="col-span-2 text-center text-gray-500 py-8 text-sm">No products found in this category.</p>`;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between cursor-pointer";
+                card.innerHTML = `
+                    <div class="relative" onclick='trackRecent(${JSON.stringify(product)})'>
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-36 object-cover bg-gray-50">
+                        ${product.discount ? `<span class="absolute top-2 left-2 bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">${product.discount}</span>` : ''}
+                        <span class="absolute bottom-2 left-2 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded font-medium">⚡ Only 2 left in stock!</span>
+                    </div>
+                    <div class="p-3 flex flex-col flex-grow justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-xs font-medium text-gray-800 line-clamp-2 h-8" onclick='trackRecent(${JSON.stringify(product)})'>${product.name}</h3>
+                                <button onclick='shareProduct(event, ${JSON.stringify(product)})' class="text-gray-400 hover:text-emerald-600 p-1 text-sm" title="Share on WhatsApp">🔗</button>
+                            </div>
+                            <div class="flex items-center gap-1 text-[11px] mb-1.5">
+                                <span class="text-yellow-500">★</span>
+                                <span class="font-bold text-gray-700">4.8</span>
+                                <span class="text-gray-400">(${Math.floor(Math.random() * 5000) + 1200})</span>
+                            </div>
+                            <div class="flex items-baseline gap-1.5 mb-2">
+                                <span class="font-bold text-gray-900 text-sm">₦${product.price.toLocaleString()}</span>
+                                ${product.oldPrice ? `<span class="text-gray-400 text-[10px] line-through">₦${product.oldPrice.toLocaleString()}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <button onclick='addToCart(${JSON.stringify(product)})' class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-1.5 rounded-lg text-xs transition">
+                                Add to Cart 🛒
+                            </button>
+                            <button onclick='orderSingle(${JSON.stringify(product)})' class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-1.5 rounded-lg text-xs shadow transition">
+                                Order via WhatsApp 📱
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(card);
+            });
+        }
+
+        function openQRModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+            const currentUrl = window.location.href;
+            document.getElementById('storeUrlDisplay').innerText = currentUrl;
+            
+            if (!qrInitialized) {
+                document.getElementById('qrcode').innerHTML = "";
+                new QRCode(document.getElementById("qrcode"), {
+                    text: currentUrl,
+                    width: 160,
+                    height: 160,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+                qrInitialized = true;
+            }
+        }
+
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        function shareProduct(e, product) {
+            e.stopPropagation();
+            const shareText = encodeURIComponent(`Check out *${product.name}* for ₦${product.price.toLocaleString()} on ObiUgo MarketHub (Awka & Igbariam Verified Store)!`);
+            window.open(`https://wa.me/?text=${shareText}`, '_blank');
+        }
+
+        function trackRecent(product) {
+            if (!recentlyViewed.some(p => p.id === product.id)) {
+                recentlyViewed.unshift(product);
+                if (recentlyViewed.length > 5) recentlyViewed.pop();
+            }
+            updateRecentUI();
+        }
+
+        function updateRecentUI() {
+            const section = document.getElementById('recentlyViewedSection');
+            const list = document.getElementById('recentList');
+            if (recentlyViewed.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+            section.classList.remove('hidden');
+            list.innerHTML = '';
+            recentlyViewed.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "flex-shrink-0 w-28 bg-white border rounded-xl p-2 shadow-sm text-center";
+                el.innerHTML = `
+                    <img src="${item.image}" class="w-full h-16 object-cover rounded-lg mb-1">
+                    <p class="text-[10px] font-medium truncate">${item.name}</p>
+                    <p class="text-[10px] text-orange-600 font-bold">₦${item.price.toLocaleString()}</p>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        function orderSingle(product) {
+            trackRecent(product);
+            const orderId = '#OBI-' + Math.floor(10000 + Math.random() * 90000);
+            const msg = encodeURIComponent(`Hello ObiUgo, I want to order [${orderId}]:\n*${product.name}* - ₦${product.price.toLocaleString()}`);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+        }
+
+        function addToCart(product) {
+            trackRecent(product);
+            cart.push(product);
+            updateCartUI();
+            alert(`"${product.name}" added to cart!`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value.trim().toUpperCase();
+            const msg = document.getElementById('couponMsg');
+            if (code === 'OBI2026') {
+                discountMultiplier = 0.9;
+                msg.innerText = "Voucher applied! 10% Off discount active.";
+                msg.classList.remove('hidden');
+                updateCartUI();
+            } else {
+                alert('Invalid voucher code. Try OBI2026');
+            }
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const cartList = document.getElementById('cartItemsList');
+            const cartSummary = document.getElementById('cartSummary');
+            const promoSection = document.getElementById('promoSection');
+            const totalPriceEl = document.getElementById('cartTotalPrice');
+
+            if (cart.length > 0) {
+                badge.innerText = cart.length;
+                badge.classList.remove('hidden');
+                cartSummary.classList.remove('hidden');
+                promoSection.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                cartSummary.classList.add('hidden');
+                promoSection.classList.add('hidden');
+            }
+
+            cartList.innerHTML = '';
+            if (cart.length === 0) {
+                cartList.innerHTML = `<p class="text-center text-gray-500 py-6 text-xs">Your cart is empty.</p>`;
+                return;
+            }
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center pt-2 text-xs";
+                row.innerHTML = `
+                    <div>
+                        <p class="font-bold text-gray-800">${item.name}</p>
+                        <p class="text-orange-600 font-semibold">₦${item.price.toLocaleString()}</p>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1">✕</button>
+                `;
+                cartList.appendChild(row);
+            });
+
+            let finalTotal = total * discountMultiplier;
+            totalPriceEl.innerText = `₦${finalTotal.toLocaleString()}`;
+        }
+
+        function prepareCheckout() {
+            if (cart.length === 0) return;
+            currentOrderId = '#OBI-' + Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('modalOrderId').innerText = currentOrderId;
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function confirmAndSendWhatsApp() {
+            let total = cart.reduce((sum, item) => sum + item.price, 0) * discountMultiplier;
+            let itemsText = cart.map((item, i) => `${i + 1}. *${item.name}* - ₦${item.price.toLocaleString()}`).join('\n');
+            let message = encodeURIComponent(`Hello ObiUgo, I want to place a cart order [${currentOrderId}]:\n\n${itemsText}\n\n*Total Amount: ₦${total.toLocaleString()}*`);
+            closeCheckoutModal();
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.description.toLowerCase().includes(query)
+            );
+            displayProducts(filtered);
+        }
+
+        function switchCategory(cat) {
+            currentCategory = cat;
+            displayProducts(allProducts);
+        }
+
+        function switchTab(tabName) {
+            ['home', 'categories', 'cart', 'wishlist', 'account'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if (navBtn) navBtn.classList.remove('text-orange-500', 'font-bold');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) activeNav.classList.add('text-orange-500', 'font-bold');
+            window.scrollTo(0, 0);
+        }
+
+        function toggleAdminPanel() {
+            document.getElementById('adminPanel').classList.toggle('hidden');
+        }
+
+        async function addProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('prodName').value;
+            const price = document.getElementById('prodPrice').value;
+            const oldPrice = document.getElementById('prodOldPrice').value;
+            const discount = document.getElementById('prodDiscount').value;
+            const category = document.getElementById('prodCategory').value;
+            const description = document.getElementById('prodDesc').value;
+            const fileInput = document.getElementById('prodImageFile');
+
+            let imageUrl = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80';
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(uploadEvent) {
+                    imageUrl = uploadEvent.target.result;
+                    await sendProductToServer(name, price, oldPrice, discount, category, description, imageUrl);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                await sendProductToServer(name, price, oldPrice, discount, category, description, imageUrl);
+            }
+        }
+
+        async function sendProductToServer(name, price, oldPrice, discount, category, description, image) {
+            const response = await fetch('/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price, oldPrice, discount, category, description, image })
+            });
+
+            if (response.ok) {
+                alert('Product added successfully!');
+                document.getElementById('addProductForm').reset();
+                toggleAdminPanel();
+                fetchProducts();
+            } else {
+                alert('Failed to add product.');
+            }
+        }
+
+        fetchProducts();
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "obiugo-markethub",
+  "version": "1.0.0",
+  "description": "Node.js &amp; Express e-commerce platform with Paystack integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skd175/obiuget-markethub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/skd175/obiuget-markethub/issues"
+  },
+  "homepage": "https://github.com/skd175/obiuget-markethub#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0"
+  }
+}
