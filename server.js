@@ -13,9 +13,10 @@ app.use(express.static(path.join(__dirname, 'obiugo-markethub')));
 
 
 app.get('/', (req, res) => {
-res.sendFile(path.join(__dirname, 'obiugo-markethub', 'index.html'));
-
+    res.sendFile(path.join(__dirname, 'obiugo-markethub', 'index.html'));
 });
+
+
 
 
 let products = [...initialProducts];
