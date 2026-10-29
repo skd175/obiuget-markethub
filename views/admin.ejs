@@ -9,7 +9,6 @@
 </head>
 <body class="bg-gray-100 pb-20">
 
-    <!-- Admin Header -->
     <div class="bg-gray-900 text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center">
         <div>
             <h1 class="text-sm font-bold">🔐 ObiUgo Secure Admin</h1>
@@ -18,20 +17,18 @@
         <a href="/" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold shadow">View Storefront</a>
     </div>
 
-    <!-- Dashboard Content -->
     <div class="p-4 max-w-xl mx-auto">
-        <!-- Add Product Form Card -->
         <div class="bg-white rounded-2xl p-4 shadow-sm mb-4">
-            <h2 class="text-base font-bold text-gray-800 mb-3">➕ Add New Product or Service</h2>
-            <form action="/admin/add" method="POST" class="space-y-3">
+            <h2 class="text-base font-bold text-gray-800 mb-3">📸 Add Product with Photo Upload</h2>
+            <form action="/admin/add" method="POST" enctype="multipart/form-data" class="space-y-3">
                 <div>
                     <label class="block text-[11px] font-bold text-gray-600 mb-1">Item Name</label>
-                    <input type="text" name="name" required placeholder="e.g. Wireless Earbuds" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" name="name" required placeholder="e.g. Itel power go pro" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1">Price (₦)</label>
-                        <input type="number" name="price" required placeholder="15000" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input type="number" name="price" required placeholder="160000" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1">Category</label>
@@ -46,16 +43,15 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Image URL</label>
-                    <input type="url" name="image" required placeholder="https://image-link.com/photo.jpg" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Upload Product Image from Phone</label>
+                    <input type="file" name="imageFile" accept="image/*" required class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                 </div>
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm transition">
-                    Save Product to Store
+                    Upload & Save Product
                 </button>
             </form>
         </div>
 
-        <!-- Inventory List -->
         <div class="bg-white rounded-2xl p-4 shadow-sm">
             <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Loaded Products (<%= typeof products !== 'undefined' ? products.length : 0 %>)</h3>
             <div class="space-y-2">
