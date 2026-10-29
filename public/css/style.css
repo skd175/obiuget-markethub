@@ -187,3 +187,35 @@ form input {
     text-align: center;
     margin: 1rem 0;
 }
+
+.category-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    scrollbar-width: none; /* Firefox */
+}
+
+.category-grid::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.category-card {
+    background: white;
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    transition: all 0.2s ease;
+}
+
+.category-card.active, .category-card:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
