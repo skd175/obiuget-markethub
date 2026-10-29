@@ -1,16 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const { getData, saveData } = require('./models/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Explicitly set views and public folders for cloud hosting like Render
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static('public'));
 
 // Home route - display products with robust category filter
 app.get('/', (req, res) => {
