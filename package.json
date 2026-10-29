@@ -1,15 +1,13 @@
 {
   "name": "obiugo-markethub",
   "version": "1.0.0",
-  "description": "Mobile-responsive e-commerce platform for ObiUgo MarketHub",
+  "description": "ObiUgo MarketHub Storefront",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "multer": "^2.5.0"
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
   }
 }
