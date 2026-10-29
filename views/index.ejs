@@ -7,191 +7,134 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 pb-28">
+<body class="bg-gray-50 pb-28">
 
-    <!-- Top Verified Store Banner -->
-    <div class="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50">
+    <!-- Top Header & Official Address -->
+    <div class="bg-white px-4 py-3 border-b flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-2">
-            <div class="bg-red-50 p-1.5 rounded-lg text-red-600 font-bold">🛡️</div>
+            <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow">🛡️</div>
             <div>
                 <h1 class="text-xs font-bold text-gray-900">Official ObiUgo Verified Store</h1>
-                <p class="text-[10px] text-gray-500">Awka & Igbariam, Anambra State</p>
+                <p class="text-[10px] text-gray-500">God is Able Lodge, Awka & Igbariam, Anambra State</p>
             </div>
         </div>
-        <div class="bg-orange-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
-            <i class="fa fa-qrcode"></i> Scan QR
-        </div>
+        <a href="#scan-qr" class="bg-orange-500 hover:bg-orange-600 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+            <i class="fa-solid fa-qrcode"></i> Scan QR
+        </a>
     </div>
 
-    <!-- Flash Sales & Solar Backup Banner -->
-    <div class="p-4">
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
+    <!-- Main Content Container -->
+    <div class="p-3 max-w-xl mx-auto space-y-4">
+
+        <!-- Mega Deals Banner -->
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-2xl p-4 shadow-lg relative overflow-hidden">
             <div class="flex justify-between items-center mb-2">
-                <span class="bg-amber-500 text-black text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Mega Deals</span>
-                <span class="bg-black/40 backdrop-blur-md text-white text-xs font-mono px-2.5 py-1 rounded-lg flex items-center gap-1">
-                    <i class="fa fa-clock text-[10px]"></i> 04:10:31
-                </span>
+                <span class="bg-amber-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">MEGA DEALS</span>
+                <span class="text-xs bg-black/30 backdrop-blur-md px-2.5 py-1 rounded-full font-mono">⏳ 04:12:18</span>
             </div>
-            <h2 class="text-lg font-bold">Flash Sales & Solar Backup</h2>
-            <p class="text-xs opacity-90 mt-0.5">Unfold Life's Best Moments with ObiUgo</p>
+            <h2 class="text-base font-extrabold mb-1">Flash Sales & Solar Backup</h2>
+            <p class="text-xs text-blue-100">Unfold Life's Best Moments with ObiUgo</p>
         </div>
-    </div>
 
-    <!-- All Your Essentials in One Place (Category Grid) -->
-    <div class="px-4 mb-4">
-        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">All Your Essentials in One Place</p>
-        <div class="bg-white rounded-2xl p-4 shadow-sm grid grid-cols-4 gap-4 text-center">
-            <a href="/?category=Phones" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">📱</div>
-                <span class="text-[11px] font-medium text-gray-700">Phones</span>
-            </a>
-            <a href="/?category=Electronics" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">📺</div>
-                <span class="text-[11px] font-medium text-gray-700">Electronics</span>
-            </a>
-            <a href="/?category=Computing" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">💻</div>
-                <span class="text-[11px] font-medium text-gray-700">Computing</span>
-            </a>
-            <a href="/?category=Home+%26+Solar" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">⚡</div>
-                <span class="text-[11px] font-medium text-gray-700">Home & Solar</span>
-            </a>
-            <a href="/?category=Beauty" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">💄</div>
-                <span class="text-[11px] font-medium text-gray-700">Beauty</span>
-            </a>
-            <a href="/?category=Accessories" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">🔌</div>
-                <span class="text-[11px] font-medium text-gray-700">Accessories</span>
-            </a>
-            <a href="/" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">✨</div>
-                <span class="text-[11px] font-medium text-gray-700">All Items</span>
-            </a>
-            <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20inquire%20about%20delivery." target="_blank" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">🚚</div>
-                <span class="text-[11px] font-medium text-gray-700">Delivery</span>
-            </a>
+        <!-- Categories Grid -->
+        <div>
+            <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">All Your Essentials in One Place</p>
+            <div class="grid grid-cols-4 gap-2">
+                <a href="/?category=Phones" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-lg mb-1">📱</div>
+                    <span class="text-[10px] font-bold text-gray-700">Phones</span>
+                </a>
+                <a href="/?category=Electronics" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-lg mb-1">📺</div>
+                    <span class="text-[10px] font-bold text-gray-700">Electronics</span>
+                </a>
+                <a href="/?category=Computing" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center text-lg mb-1">💻</div>
+                    <span class="text-[10px] font-bold text-gray-700">Computing</span>
+                </a>
+                <a href="/?category=Home+%26+Solar" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center text-lg mb-1">⚡</div>
+                    <span class="text-[10px] font-bold text-gray-700">Home & Solar</span>
+                </a>
+                <a href="/?category=Beauty" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-pink-50 rounded-full flex items-center justify-center text-lg mb-1">💄</div>
+                    <span class="text-[10px] font-bold text-gray-700">Beauty</span>
+                </a>
+                <a href="/?category=Accessories" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-lg mb-1">🔌</div>
+                    <span class="text-[10px] font-bold text-gray-700">Accessories</span>
+                </a>
+                <a href="/" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-yellow-50 rounded-full flex items-center justify-center text-lg mb-1">✨</div>
+                    <span class="text-[10px] font-bold text-gray-700">All Items</span>
+                </a>
+                <a href="/?category=Delivery" class="bg-white p-3 rounded-2xl text-center shadow-sm hover:shadow transition border border-gray-100 flex flex-col items-center">
+                    <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-lg mb-1">🚚</div>
+                    <span class="text-[10px] font-bold text-gray-700">Delivery</span>
+                </a>
+            </div>
         </div>
-    </div>
 
-    <!-- Product Grid -->
-    <div class="px-4">
-        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Live Catalog (<%= typeof products !== 'undefined' ? products.length : 0 %> Items)</h3>
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <!-- Top Deals & Best Sellers Section -->
+        <div class="bg-gray-900 text-white rounded-2xl p-4 shadow-md flex justify-between items-center">
+            <div>
+                <h3 class="text-xs font-bold flex items-center gap-1.5 mb-0.5">🔥 Top Deals & Best Sellers</h3>
+                <p class="text-[10px] text-gray-400">Order directly via WhatsApp</p>
+            </div>
+            <a href="/" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow">Live Catalog</a>
+        </div>
+
+        <!-- Live Catalog Header -->
+        <div class="flex justify-between items-center px-1">
+            <h3 class="text-xs font-extrabold text-gray-800 uppercase tracking-wider">Live Catalog (<%= typeof products !== 'undefined' ? products.length : 0 %> Items)</h3>
+            <a href="/" class="text-[11px] font-bold text-indigo-600">View All</a>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-2 gap-3">
             <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
-                <% products.forEach(product => { %>
-                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 flex flex-col justify-between">
+                <% products.forEach((product) => { %>
+                    <div class="bg-white rounded-2xl p-2.5 shadow-sm border border-gray-100 flex flex-col justify-between">
                         <div>
-                            <div class="relative h-36 bg-gray-100">
-                                <img src="<%= product.image || '' %>" alt="<%= product.name || '' %>" class="w-full h-full object-cover">
-                                <span class="absolute top-2 left-2 bg-black/60 text-white text-[9px] px-2 py-0.5 rounded-full"><%= product.category || 'General' %></span>
+                            <div class="relative mb-2">
+                                <img src="<%= product.image || '' %>" alt="" class="w-full h-32 object-cover rounded-xl bg-gray-100">
+                                <span class="absolute top-2 left-2 bg-black/60 backdrop-blur-md text-white text-[9px] px-2 py-0.5 rounded-md font-medium"><%= product.category || 'General' %></span>
                             </div>
-                            <div class="p-3">
-                                <h4 class="text-xs font-semibold text-gray-800 line-clamp-2 h-8"><%= product.name || '' %></h4>
-                                <p class="text-indigo-600 font-bold text-sm mt-1">₦<%= Number(product.price || 0).toLocaleString() %></p>
-                            </div>
+                            <h4 class="text-xs font-bold text-gray-800 line-clamp-2 mb-1"><%= product.name || 'Unnamed Product' %></h4>
                         </div>
-                        <div class="p-3 pt-0">
-                            <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20order%20<%= encodeURIComponent(product.name || '') %>%20priced%20at%20₦<%= product.price || 0 %>" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white text-center py-2 rounded-xl text-xs font-semibold block shadow-sm">
-                                <i class="fab fa-whatsapp"></i> Buy on WhatsApp
+                        <div>
+                            <p class="text-xs text-indigo-600 font-extrabold mb-2">₦<%= Number(product.price || 0).toLocaleString() %></p>
+                            <a href="https://wa.me/2340000000000?text=Hello%20ObiUgo,%20I%20want%20to%20order%20<%= encodeURIComponent(product.name) %>" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 rounded-xl text-[10px] flex items-center justify-center gap-1 shadow-sm">
+                                <i class="fa-brands fa-whatsapp"></i> Order Now
                             </a>
                         </div>
                     </div>
                 <% }) %>
             <% } else { %>
-                <div class="col-span-2 md:col-span-4 text-center py-10 text-gray-400 text-xs">
-                    No products found.
-                </div>
+                <div class="col-span-2 text-center py-10 text-gray-400 text-xs">No products found in this category.</div>
             <% } %>
         </div>
+
     </div>
 
-    <!-- Bottom Navigation Bar (Fully Functional) -->
+    <!-- Bottom Navigation Bar -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-6 flex justify-between items-center z-50 shadow-lg">
-        <a href="/" class="flex flex-col items-center text-orange-500">
-            <i class="fa fa-home text-lg"></i>
-            <span class="text-[10px] font-bold mt-0.5">Home</span>
+        <a href="/" class="text-orange-600 flex flex-col items-center text-[10px] font-bold">
+            <i class="fa-solid fa-house text-base mb-0.5"></i> Home
         </a>
-        <button onclick="openCategories()" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
-            <i class="fa fa-folder text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">Categories</span>
-        </button>
-        <button onclick="openCartModal()" class="flex flex-col items-center text-gray-400 hover:text-gray-700 relative">
-            <i class="fa fa-shopping-cart text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">Cart</span>
-        </button>
-        <button onclick="openWishlistModal()" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
-            <i class="fa fa-heart text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">Wishlist</span>
-        </button>
-        <a href="/admin?password=obiugo2026" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
-            <i class="fa fa-user text-lg"></i>
-            <span class="text-[10px] font-medium mt-0.5">Account</span>
+        <a href="/?category=All" class="text-gray-400 hover:text-gray-700 flex flex-col items-center text-[10px] font-medium">
+            <i class="fa-solid fa-folder-open text-base mb-0.5"></i> Categories
+        </a>
+        <a href="#" class="text-gray-400 hover:text-gray-700 flex flex-col items-center text-[10px] font-medium">
+            <i class="fa-solid fa-cart-shopping text-base mb-0.5"></i> Cart
+        </a>
+        <a href="#" class="text-gray-400 hover:text-gray-700 flex flex-col items-center text-[10px] font-medium">
+            <i class="fa-solid fa-heart text-base mb-0.5"></i> Wishlist
+        </a>
+        <a href="/obiugo-admin" class="text-gray-400 hover:text-gray-700 flex flex-col items-center text-[10px] font-medium">
+            <i class="fa-solid fa-user text-base mb-0.5"></i> Account
         </a>
     </div>
 
-    <!-- Interactive Modal Popup -->
-    <div id="actionModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end justify-center">
-        <div class="bg-w-full bg-white w-full max-w-lg rounded-t-3xl p-5 shadow-2xl max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="modalTitle" class="text-base font-bold text-gray-800">Title</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-lg font-bold px-2">&times;</button>
-            </div>
-            <div id="modalContent" class="text-sm text-gray-600">
-                <!-- Dynamic content -->
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const modal = document.getElementById('actionModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalContent = document.getElementById('modalContent');
-
-        function openCategories() {
-            modalTitle.textContent = "Browse Store Categories";
-            modalContent.innerHTML = `
-                <div class="grid grid-cols-2 gap-3 py-2">
-                    <a href="/?category=Phones" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">📱 Phones</a>
-                    <a href="/?category=Electronics" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">📺 Electronics</a>
-                    <a href="/?category=Computing" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-orange-500 hover:bg-orange-50 border">💻 Computing</a>
-                    <a href="/?category=Home+%26+Solar" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">⚡ Home & Solar</a>
-                    <a href="/?category=Beauty" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">💄 Beauty</a>
-                    <a href="/?category=Accessories" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">🔌 Accessories</a>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-
-        function openCartModal() {
-            modalTitle.textContent = "Your Shopping Cart";
-            modalContent.innerHTML = `
-                <div class="text-center py-6">
-                    <p class="text-gray-500 mb-4 text-xs">Your cart is currently empty. Tap 'Buy on WhatsApp' on any product to order directly!</p>
-                    <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20make%20an%20order." target="_blank" class="bg-green-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold inline-block">
-                        <i class="fab fa-whatsapp"></i> Chat with ObiUgo on WhatsApp
-                    </a>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-
-        function openWishlistModal() {
-            modalTitle.textContent = "Your Saved Wishlist";
-            modalContent.innerHTML = `
-                <div class="text-center py-6">
-                    <p class="text-gray-500 text-xs">No saved items in your wishlist yet. Tap products to browse!</p>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-    </script>
 </body>
 </html>
