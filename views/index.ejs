@@ -9,14 +9,13 @@
 </head>
 <body class="bg-gray-50 pb-20">
 
-    <!-- Top Bar / Search -->
+    <!-- Top Bar / Clean Search (No Admin Button) -->
     <div class="sticky top-0 z-50 bg-white shadow-sm p-3 flex items-center justify-between gap-2">
         <div class="relative flex-1 flex items-center bg-gray-100 rounded-full px-3 py-1">
             <i class="fa fa-search text-gray-400 mr-2"></i>
             <input type="text" id="searchInput" placeholder="Search products..." class="w-full bg-transparent text-sm focus:outline-none py-1">
             <button id="searchBtn" class="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-semibold ml-1">Search</button>
         </div>
-        <a href="/admin?password=obiugo2026" class="bg-gray-800 text-white px-3 py-2 rounded-full text-xs font-semibold shadow">Admin</a>
     </div>
 
     <!-- Store Header Banner -->
@@ -100,11 +99,7 @@
 
         searchBtn.addEventListener('click', performSearch);
         searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
-            } else {
-                performSearch(); // Live filter as you type too!
-            }
+            performSearch();
         });
     </script>
 </body>
