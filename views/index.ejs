@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 pb-24">
+<body class="bg-gray-100 pb-28">
 
     <!-- Top Verified Store Banner -->
     <div class="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-50">
@@ -42,48 +42,37 @@
         <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3">All Your Essentials in One Place</p>
         <div class="bg-white rounded-2xl p-4 shadow-sm grid grid-cols-4 gap-4 text-center">
             <a href="/?category=Phones" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">📱</div>
+                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">📱</div>
                 <span class="text-[11px] font-medium text-gray-700">Phones</span>
             </a>
             <a href="/?category=Electronics" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">📺</div>
+                <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">📺</div>
                 <span class="text-[11px] font-medium text-gray-700">Electronics</span>
             </a>
             <a href="/?category=Computing" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">💻</div>
+                <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">💻</div>
                 <span class="text-[11px] font-medium text-gray-700">Computing</span>
             </a>
             <a href="/?category=Home+%26+Solar" class="flex flex-col items-center group">
-                <div class="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">⚡</div>
+                <div class="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">⚡</div>
                 <span class="text-[11px] font-medium text-gray-700">Home & Solar</span>
             </a>
             <a href="/?category=Beauty" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">💄</div>
+                <div class="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">💄</div>
                 <span class="text-[11px] font-medium text-gray-700">Beauty</span>
             </a>
             <a href="/?category=Accessories" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">🔌</div>
+                <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">🔌</div>
                 <span class="text-[11px] font-medium text-gray-700">Accessories</span>
             </a>
             <a href="/" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">✨</div>
+                <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">✨</div>
                 <span class="text-[11px] font-medium text-gray-700">All Items</span>
             </a>
             <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20inquire%20about%20delivery." target="_blank" class="flex flex-col items-center group mt-2">
-                <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1 group-hover:scale-105 transition">🚚</div>
+                <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-xl shadow-inner mb-1">🚚</div>
                 <span class="text-[11px] font-medium text-gray-700">Delivery</span>
             </a>
-        </div>
-    </div>
-
-    <!-- Top Deals & Best Sellers Bar -->
-    <div class="px-4 mb-4">
-        <div class="bg-gray-900 rounded-2xl p-4 text-white flex items-center justify-between shadow-md">
-            <div>
-                <h3 class="text-xs font-bold flex items-center gap-1.5"><span class="text-orange-400">🔥</span> Top Deals & Best Sellers</h3>
-                <p class="text-[10px] text-gray-400 mt-0.5">Order directly via WhatsApp</p>
-            </div>
-            <a href="/" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow">Live Catalog</a>
         </div>
     </div>
 
@@ -114,42 +103,95 @@
                 <% }) %>
             <% } else { %>
                 <div class="col-span-2 md:col-span-4 text-center py-10 text-gray-400 text-xs">
-                    No products found in this category.
+                    No products found.
                 </div>
             <% } %>
         </div>
     </div>
 
-    <!-- Floating WhatsApp Assistant Button -->
-    <div class="fixed bottom-20 right-4 z-40">
-        <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20need%20help%20with%20an%20order." target="_blank" class="w-12 h-12 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-lg text-xl">
-            <i class="fa fa-comment-dots"></i>
-        </a>
-    </div>
-
-    <!-- Bottom Navigation Bar (Matching Screenshot Layout) -->
+    <!-- Bottom Navigation Bar (Fully Functional) -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-6 flex justify-between items-center z-50 shadow-lg">
         <a href="/" class="flex flex-col items-center text-orange-500">
             <i class="fa fa-home text-lg"></i>
             <span class="text-[10px] font-bold mt-0.5">Home</span>
         </a>
-        <a href="/" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
+        <button onclick="openCategories()" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
             <i class="fa fa-folder text-lg"></i>
             <span class="text-[10px] font-medium mt-0.5">Categories</span>
-        </a>
-        <a href="/" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
+        </button>
+        <button onclick="openCartModal()" class="flex flex-col items-center text-gray-400 hover:text-gray-700 relative">
             <i class="fa fa-shopping-cart text-lg"></i>
             <span class="text-[10px] font-medium mt-0.5">Cart</span>
-        </a>
-        <a href="/" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
+        </button>
+        <button onclick="openWishlistModal()" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
             <i class="fa fa-heart text-lg"></i>
             <span class="text-[10px] font-medium mt-0.5">Wishlist</span>
-        </a>
+        </button>
         <a href="/admin?password=obiugo2026" class="flex flex-col items-center text-gray-400 hover:text-gray-700">
             <i class="fa fa-user text-lg"></i>
             <span class="text-[10px] font-medium mt-0.5">Account</span>
         </a>
     </div>
 
+    <!-- Interactive Modal Popup -->
+    <div id="actionModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-end justify-center">
+        <div class="bg-w-full bg-white w-full max-w-lg rounded-t-3xl p-5 shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-base font-bold text-gray-800">Title</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-lg font-bold px-2">&times;</button>
+            </div>
+            <div id="modalContent" class="text-sm text-gray-600">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('actionModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        function openCategories() {
+            modalTitle.textContent = "Browse Store Categories";
+            modalContent.innerHTML = `
+                <div class="grid grid-cols-2 gap-3 py-2">
+                    <a href="/?category=Phones" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">📱 Phones</a>
+                    <a href="/?category=Electronics" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">📺 Electronics</a>
+                    <a href="/?category=Computing" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-orange-500 hover:bg-orange-50 border">💻 Computing</a>
+                    <a href="/?category=Home+%26+Solar" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">⚡ Home & Solar</a>
+                    <a href="/?category=Beauty" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">💄 Beauty</a>
+                    <a href="/?category=Accessories" class="p-3 bg-gray-50 rounded-xl text-center font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-600 border">🔌 Accessories</a>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function openCartModal() {
+            modalTitle.textContent = "Your Shopping Cart";
+            modalContent.innerHTML = `
+                <div class="text-center py-6">
+                    <p class="text-gray-500 mb-4 text-xs">Your cart is currently empty. Tap 'Buy on WhatsApp' on any product to order directly!</p>
+                    <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20make%20an%20order." target="_blank" class="bg-green-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold inline-block">
+                        <i class="fab fa-whatsapp"></i> Chat with ObiUgo on WhatsApp
+                    </a>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function openWishlistModal() {
+            modalTitle.textContent = "Your Saved Wishlist";
+            modalContent.innerHTML = `
+                <div class="text-center py-6">
+                    <p class="text-gray-500 text-xs">No saved items in your wishlist yet. Tap products to browse!</p>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
