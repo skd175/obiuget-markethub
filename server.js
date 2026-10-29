@@ -4,11 +4,33 @@ const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
-const { getData, saveData } = require('./models/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'obiugo2026';
+
+// Direct helper to read database fresh every single time
+const getFreshData = () => {
+    const dbPath = path.join(__dirname, 'models', 'database.json');
+    try {
+        if (fs.existsSync(dbPath)) {
+            const data = fs.readFileSync(dbPath, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (err) {
+        console.error("Error reading DB:", err);
+    }
+    return { products: [], orders: [] };
+};
+
+const saveFreshData = (data) => {
+    const dbPath = path.join(__dirname, 'models', 'database.json');
+    try {
+        fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
+    } catch (err) {
+        console.error("Error writing DB:", err);
+    }
+};
 
 // Set up storage for uploaded product images
 const storage = multer.diskStorage({
@@ -33,26 +55,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// Home route - fetches fresh data every time
+// Home route - fetches fresh data directly from file every time
 app.get('/', (req, res) => {
-    const db = getData();
+    const db = getFreshData();
     const selectedCategory = req.query.category;
     
-    let filteredProducts = db.products;
+    let filteredProducts = db.products || [];
     if (selectedCategory && selectedCategory !== 'All') {
-        filteredProducts = db.products.filter(p => 
+        filteredProducts = filteredProducts.filter(p => 
             p.category && p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
         );
     }
 
-    // If you are using index.ejs, this renders it. If you want a dynamic HTML view, we can render it inline too.
     res.render('index', { products: filteredProducts, currentCategory: selectedCategory || 'All' });
 });
 
 // Checkout route
 app.post('/order', (req, res) => {
     const { customerName, phone, address, items } = req.body;
-    const db = getData();
+    const db = getFreshData();
     
     const newOrder = {
         id: Date.now(),
@@ -64,7 +85,7 @@ app.post('/order', (req, res) => {
     };
 
     db.orders.push(newOrder);
-    saveData(db);
+    saveFreshData(db);
 
     res.json({ success: true, message: "Order placed successfully!", orderId: newOrder.id });
 });
@@ -99,9 +120,9 @@ app.get('/admin', (req, res) => {
         `);
     }
 
-    const db = getData();
+    const db = getFreshData();
     
-    let productsHtml = db.products.map(p => `
+    let productsHtml = (db.products || []).map(p => `
         <tr class="border-b">
             <td class="p-3"><img src="${p.image}" class="w-12 h-12 object-cover rounded"></td>
             <td class="p-3 font-medium">${p.name}</td>
@@ -110,7 +131,7 @@ app.get('/admin', (req, res) => {
         </tr>
     `).join('');
 
-    let ordersHtml = db.orders.map(o => `
+    let ordersHtml = (db.orders || []).map(o => `
         <tr class="border-b">
             <td class="p-3">${o.customerName}</td>
             <td class="p-3">${o.phone}</td>
@@ -204,9 +225,9 @@ app.post('/admin/add-product', upload.single('imageFile'), (req, res) => {
     if (password !== ADMIN_PASSWORD) return res.status(403).send("Unauthorized");
 
     const { name, price, category } = req.body;
-    const db = getData();
+    const db = getFreshData();
 
-    let imagePath = 'https://via.placeholder.com/150';
+    let imagePath = 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600';
     if (req.file) {
         imagePath = '/uploads/' + req.file.filename;
     }
@@ -219,8 +240,9 @@ app.post('/admin/add-product', upload.single('imageFile'), (req, res) => {
         image: imagePath
     };
 
+    if (!db.products) db.products = [];
     db.products.push(newProduct);
-    saveData(db);
+    saveFreshData(db);
 
     res.redirect('/admin?password=' + ADMIN_PASSWORD);
 });
@@ -231,10 +253,10 @@ app.post('/admin/delete-order/:id', (req, res) => {
     if (password !== ADMIN_PASSWORD) return res.status(403).send("Unauthorized");
 
     const orderId = Number(req.params.id);
-    const db = getData();
+    const db = getFreshData();
 
-    db.orders = db.orders.filter(o => o.id !== orderId);
-    saveData(db);
+    db.orders = (db.orders || []).filter(o => o.id !== orderId);
+    saveFreshData(db);
 
     res.redirect('/admin?password=' + ADMIN_PASSWORD);
 });
