@@ -9,31 +9,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Helper to load products safely from products.js or JSON
+// Helper to load products safely
 function getProducts() {
-    try {
-        // Try loading products.js module if exported as array
-        const productsModule = require('./products.js');
-        if (Array.isArray(productsModule)) {
-            return productsModule;
-        }
-        if (productsModule.products && Array.isArray(productsModule.products)) {
-            return productsModule.products;
-        }
-    } catch (e) {
-        console.log("Could not require products.js directly, reading as text...");
-    }
-
     try {
         const dataPath = path.join(__dirname, 'products.js');
         if (fs.existsSync(dataPath)) {
-            const raw = fs.readFileSync(dataPath, 'utf8');
-            // If it exports like module.exports = [...] or is JSON
-            if (raw.includes('module.exports') || raw.includes('export')) {
-                delete require.cache[require.resolve('./products.js')];
-                return require('./products.js');
-            }
-            return JSON.parse(raw);
+            delete require.cache[require.resolve('./products.js')];
+            const mod = require('./products.js');
+            return Array.isArray(mod) ? mod : (mod.products || []);
         }
     } catch (e) {
         console.error("Error reading products:", e);
@@ -54,11 +37,8 @@ app.get('/', (req, res) => {
     res.render('index', { products: filteredProducts });
 });
 
-// Secure Admin Route (Protected by password)
-app.get('/admin', (req, res) => {
-    if (req.query.password !== 'obiugo2026') {
-        return res.status(403).send('Access Denied. Incorrect or missing password.');
-    }
+// Short Secret Admin Route
+app.get('/obiugo-admin', (req, res) => {
     const products = getProducts();
     res.render('admin', { products });
 });
