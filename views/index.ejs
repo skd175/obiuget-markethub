@@ -3,114 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ObiUgo MarketHub E-Commerce</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>ObiUgo MarketHub - Your One-Stop Online Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <header>
-        <h1>🛍️ ObiUgo MarketHub</h1>
-        <p>Fresh meals, drinks, and essentials delivered right to your lodge!</p>
-    </header>
+<body class="bg-gray-50 pb-20">
 
-    <main class="container">
-        <!-- Categories Section -->
-        <h2>Categories</h2>
-        <div class="category-grid">
-            <a href="/?category=All" class="category-card <%= currentCategory === 'All' ? 'active' : '' %>">📂 All Items</a>
-            <a href="/?category=Phones" class="category-card <%= currentCategory === 'Phones' ? 'active' : '' %>">📱 Phones</a>
-            <a href="/?category=Electronics" class="category-card <%= currentCategory === 'Electronics' ? 'active' : '' %>">📺 Electronics</a>
-            <a href="/?category=Computing" class="category-card <%= currentCategory === 'Computing' ? 'active' : '' %>">💻 Computing</a>
-            <a href="/?category=Home & Solar" class="category-card <%= currentCategory === 'Home & Solar' ? 'active' : '' %>">⚡ Home & Solar</a>
-            <a href="/?category=Beauty" class="category-card <%= currentCategory === 'Beauty' ? 'active' : '' %>">💄 Beauty</a>
-            <a href="/?category=Meals" class="category-card <%= currentCategory === 'Meals' ? 'active' : '' %>">🍲 Meals</a>
-            <a href="/?category=Drinks" class="category-card <%= currentCategory === 'Drinks' ? 'active' : '' %>">🥤 Drinks</a>
+    <!-- Top Bar / Search -->
+    <div class="sticky top-0 z-50 bg-white shadow-sm p-3 flex items-center justify-between gap-3">
+        <div class="relative flex-1">
+            <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+            <input type="text" id="searchInput" placeholder="Search 100 products on ObiUgo..." class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
+        <a href="/admin?password=obiugo2026" class="bg-indigo-600 text-white px-4 py-2 rounded-full text-xs font-semibold shadow">Admin</a>
+    </div>
 
-        <h2>Products (<%= currentCategory %>)</h2>
-        <div class="product-grid">
-            <% if (products.length === 0) { %>
-                <p>No products found in this category.</p>
-            <% } else { %>
+    <!-- Store Header Banner -->
+    <div class="p-4">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+            <h1 class="text-xl font-bold">Official ObiUgo Verified Store</h1>
+            <p class="text-xs opacity-90 mt-1">Awka & Igbariam, Anambra State • Fast Delivery</p>
+        </div>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="px-4 overflow-x-auto flex gap-2 no-scrollbar py-2">
+        <a href="/" class="px-4 py-2 bg-indigo-600 text-white rounded-full text-xs font-medium whitespace-nowrap shadow-sm">All Items</a>
+        <a href="/?category=Phones" class="px-4 py-2 bg-white text-gray-700 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Phones</a>
+        <a href="/?category=Computing" class="px-4 py-2 bg-white text-gray-700 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Computing</a>
+        <a href="/?category=Home+%26+Solar" class="px-4 py-2 bg-white text-gray-700 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Home & Solar</a>
+        <a href="/?category=Accessories" class="px-4 py-2 bg-white text-gray-700 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Accessories</a>
+        <a href="/?category=Adult+Novelties" class="px-4 py-2 bg-white text-gray-700 rounded-full text-xs font-medium whitespace-nowrap shadow-sm border">Adult Novelties</a>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="px-4 py-4">
+        <h2 class="text-base font-bold text-gray-800 mb-3">Live Catalog (<span id="productCount"><%= products.length %></span> Items)</h2>
+        
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <% if (products && products.length > 0) { %>
                 <% products.forEach(product => { %>
-                    <div class="product-card">
-                        <img src="<%= product.image %>" alt="<%= product.name %>" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
-                        <h3><%= product.name %></h3>
-                        <p class="price">₦<%= product.price.toLocaleString() %></p>
-                        <button onclick="addToCart('<%= product.id %>', '<%= product.name %>', <%= product.price %>)">Add to Cart</button>
+                    <div class="product-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 flex flex-col justify-between" data-name="<%= product.name.toLowerCase() %>" data-category="<%= (product.category || '').toLowerCase() %>">
+                        <div>
+                            <div class="relative h-36 bg-gray-100">
+                                <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-full object-cover">
+                                <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full"><%= product.category || 'General' %></span>
+                            </div>
+                            <div class="p-3">
+                                <h3 class="text-xs font-semibold text-gray-800 line-clamp-2 h-8"><%= product.name %></h3>
+                                <p class="text-indigo-600 font-bold text-sm mt-1">₦<%= Number(product.price).toLocaleString() %></p>
+                            </div>
+                        </div>
+                        <div class="p-3 pt-0">
+                            <a href="https://wa.me/2348154126561?text=Hello%20ObiUgo,%20I%20want%20to%20order%20<%= encodeURIComponent(product.name) %>%20priced%20at%20₦<%= product.price %>" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white text-center py-2 rounded-lg text-xs font-semibold block shadow-sm">
+                                <i class="fab fa-whatsapp"></i> Buy on WhatsApp
+                            </a>
+                        </div>
                     </div>
                 <% }) %>
+            <% } else { %>
+                <div class="col-span-2 md:col-span-4 text-center py-10 text-gray-500 text-sm">
+                    No products found in this category.
+                </div>
             <% } %>
         </div>
+    </div>
 
-        <div class="cart-section">
-            <h2>Your Cart</h2>
-            <div id="cart-items">Cart is empty</div>
-            <p><strong>Total: ₦<span id="cart-total">0</span></strong></p>
-            
-            <h3>Checkout</h3>
-            <form id="checkout-form" onsubmit="submitOrder(event)">
-                <input type="text" id="customerName" placeholder="Your Name" required>
-                <input type="text" id="phone" placeholder="Phone Number" required>
-                <input type="text" id="address" placeholder="Lodge / Room Number" required>
-                <button type="submit">Place Order</button>
-            </form>
-        </div>
-    </main>
-
+    <!-- Live Search & Filter Script -->
     <script>
-        let cart = [];
+        const searchInput = document.getElementById('searchInput');
+        const productCards = document.querySelectorAll('.product-card');
+        const productCount = document.getElementById('productCount');
 
-        function addToCart(id, name, price) {
-            cart.push({ id, name, price });
-            updateCartUI();
-        }
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            let visibleCount = 0;
 
-        function updateCartUI() {
-            const cartContainer = document.getElementById('cart-items');
-            const totalContainer = document.getElementById('cart-total');
-            if (cart.length === 0) {
-                cartContainer.innerHTML = 'Cart is empty';
-                totalContainer.innerText = '0';
-                return;
-            }
-            let html = '<ul>';
-            let total = 0;
-            cart.forEach((item, index) => {
-                total += item.price;
-                html += `<li>${item.name} - ₦${item.price}</li>`;
-            });
-            html += '</ul>';
-            cartContainer.innerHTML = html;
-            totalContainer.innerText = total.toLocaleString();
-        }
-
-        async function submitOrder(e) {
-            e.preventDefault();
-            if (cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-
-            const customerName = document.getElementById('customerName').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-
-            const response = await fetch('/order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ customerName, phone, address, items: JSON.stringify(cart) })
+            productCards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                const category = card.getAttribute('data-category');
+                
+                if (name.includes(term) || category.includes(term)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
             });
 
-            const result = await response.json();
-            if (result.success) {
-                alert('Order placed successfully! Order ID: ' + result.orderId);
-                cart = [];
-                updateCartUI();
-                document.getElementById('checkout-form').reset();
-            } else {
-                alert('Failed to place order.');
+            if (productCount) {
+                productCount.textContent = visibleCount;
             }
-        }
+        });
     </script>
 </body>
 </html>
