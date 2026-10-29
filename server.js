@@ -9,7 +9,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'obiugo2026';
 
-// Direct helper to read database fresh every single time
 const getFreshData = () => {
     const dbPath = path.join(__dirname, 'models', 'database.json');
     try {
@@ -32,7 +31,6 @@ const saveFreshData = (data) => {
     }
 };
 
-// Set up storage for uploaded product images
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = path.join(__dirname, 'public', 'uploads');
@@ -55,13 +53,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// Home route - fetches fresh data directly from file every time
+// API endpoint for frontend JavaScript to fetch products
+app.get('/api/products', (req, res) => {
+    const db = getFreshData();
+    res.json(db.products || []);
+});
+
+// Home route
 app.get('/', (req, res) => {
     const db = getFreshData();
     const selectedCategory = req.query.category;
     
     let filteredProducts = db.products || [];
-    if (selectedCategory && selectedCategory !== 'All') {
+    if (selectedCategory && selectedCategory !== 'All' && selectedCategory !== 'All Items') {
         filteredProducts = filteredProducts.filter(p => 
             p.category && p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
         );
