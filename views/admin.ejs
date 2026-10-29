@@ -22,10 +22,10 @@
     <div class="p-4 max-w-xl mx-auto">
         <!-- Add Product Form Card -->
         <div class="bg-white rounded-2xl p-4 shadow-sm mb-4">
-            <h2 class="text-base font-bold text-gray-800 mb-3">➕ Add New Product</h2>
+            <h2 class="text-base font-bold text-gray-800 mb-3">➕ Add New Product or Service</h2>
             <form action="/admin/add" method="POST" class="space-y-3">
                 <div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Product Name</label>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1">Item Name</label>
                     <input type="text" name="name" required placeholder="e.g. Wireless Earbuds" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
@@ -47,79 +47,37 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-gray-600 mb-1">Image URL</label>
-                    <input type="url" name="image" required placeholder="https://image-link.com/photo.jpg" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500
-cat << 'EOF' > server.js
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const app = express();
-const PORT = process.env.PORT || 3000;
+                    <input type="url" name="image" required placeholder="https://image-link.com/photo.jpg" class="w-full bg-gray-50 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-sm transition">
+                    Save Product to Store
+                </button>
+            </form>
+        </div>
 
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+        <!-- Inventory List -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Loaded Products (<%= typeof products !== 'undefined' ? products.length : 0 %>)</h3>
+            <div class="space-y-2">
+                <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
+                    <% products.forEach((product) => { %>
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded-xl border border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <img src="<%= product.image || '' %>" alt="" class="w-10 h-10 object-cover rounded-lg bg-gray-200">
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-800 line-clamp-1"><%= product.name || 'Unnamed' %></h4>
+                                    <p class="text-[11px] text-indigo-600 font-semibold">₦<%= Number(product.price || 0).toLocaleString() %></p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-gray-200 text-gray-700 px-2 py-1 rounded-md font-medium"><%= product.category || 'General' %></span>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="text-center text-gray-400 text-xs py-4">No products found in database.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
 
-// Helper to load products safely
-function getProducts() {
-    try {
-        const dataPath = path.join(__dirname, 'products.js');
-        if (fs.existsSync(dataPath)) {
-            delete require.cache[require.resolve('./products.js')];
-            const mod = require('./products.js');
-            return Array.isArray(mod) ? mod : (mod.products || []);
-        }
-    } catch (e) {
-        console.error("Error reading products:", e);
-    }
-    return [];
-}
-
-// Storefront Route
-app.get('/', (req, res) => {
-    const products = getProducts();
-    const category = req.query.category;
-    
-    let filteredProducts = products;
-    if (category) {
-        filteredProducts = products.filter(p => p.category && p.category.toLowerCase() === category.toLowerCase());
-    }
-    
-    res.render('index', { products: filteredProducts });
-});
-
-// Admin Dashboard Route
-app.get('/obiugo-admin', (req, res) => {
-    const products = getProducts();
-    res.render('admin', { products });
-});
-
-// Handle Adding New Product from Admin Form
-app.post('/admin/add', (req, res) => {
-    try {
-        const { name, price, category, image } = req.body;
-        const products = getProducts();
-        
-        const newProduct = {
-            name: name,
-            price: Number(price),
-            category: category,
-            image: image
-        };
-
-        products.unshift(newProduct); // Add to beginning of list
-
-        // Write back to products.js file format
-        const fileContent = `module.exports = ${JSON.stringify(products, null, 4)};\n`;
-        fs.writeFileSync(path.join(__dirname, 'products.js'), fileContent, 'utf8');
-
-        res.redirect('/obiugo-admin');
-    } catch (e) {
-        console.error("Error adding product:", e);
-        res.status(500).send("Error adding product");
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`ObiUgo MarketHub running on port ${PORT}`);
-});
+</body>
+</html>
