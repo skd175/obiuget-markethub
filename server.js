@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
 const { getData, saveData } = require('./models/db');
 
 const app = express();
@@ -12,7 +13,11 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'obiugo2026';
 // Set up storage for uploaded product images
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'public', 'uploads'));
+        const uploadDir = path.join(__dirname, 'public', 'uploads');
+        if (!fs.existsSync(uploadDir)){
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
         cb(null, 'prod_' + Date.now() + path.extname(file.originalname));
@@ -28,14 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// Ensure uploads directory exists
-const fs = require('fs');
-const uploadDir = path.join(__dirname, 'public', 'uploads');
-if (!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Home route
+// Home route - fetches fresh data every time
 app.get('/', (req, res) => {
     const db = getData();
     const selectedCategory = req.query.category;
@@ -47,6 +45,7 @@ app.get('/', (req, res) => {
         );
     }
 
+    // If you are using index.ejs, this renders it. If you want a dynamic HTML view, we can render it inline too.
     res.render('index', { products: filteredProducts, currentCategory: selectedCategory || 'All' });
 });
 
@@ -151,7 +150,7 @@ app.get('/admin', (req, res) => {
                     <form action="/admin/add-product?password=${ADMIN_PASSWORD}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input type="text" name="name" placeholder="Product Name" required class="p-2 border rounded">
                         <input type="number" name="price" placeholder="Price (₦)" required class="p-2 border rounded">
-                        <input type="text" name="category" placeholder="Category (e.g. Power, Electronics)" required class="p-2 border rounded">
+                        <input type="text" name="category" placeholder="Category (e.g. Home & Solar)" required class="p-2 border rounded">
                         <input type="file" name="imageFile" accept="image/*" class="p-2 border rounded md:col-span-2">
                         <button type="submit" class="md:col-span-2 bg-indigo-600 text-white py-2 rounded font-semibold hover:bg-indigo-700">Add Product</button>
                     </form>
@@ -199,7 +198,7 @@ app.get('/admin', (req, res) => {
     `);
 });
 
-// Add Product route with Multer handling
+// Add Product route
 app.post('/admin/add-product', upload.single('imageFile'), (req, res) => {
     const password = req.query.password;
     if (password !== ADMIN_PASSWORD) return res.status(403).send("Unauthorized");
@@ -214,8 +213,8 @@ app.post('/admin/add-product', upload.single('imageFile'), (req, res) => {
 
     const newProduct = {
         id: 'p_' + Date.now(),
-        name,
-        price: Number(price),
+        name: name ? name.trim() : 'Unnamed Product',
+        price: Number(price) || 0,
         category: category ? category.trim() : 'General',
         image: imagePath
     };
