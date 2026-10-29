@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
     const selectedCategory = req.query.category;
     
     let filteredProducts = db.products || [];
-    if (selectedCategory && selectedCategory !== 'All' && selectedCategory !== 'All Items') {
+    if (selectedCategory && selectedCategory !== 'All' && selectedCategory !== 'All Items' && selectedCategory !== 'all') {
         filteredProducts = filteredProducts.filter(p => 
             p.category && p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
         );
@@ -175,7 +175,7 @@ app.get('/admin', (req, res) => {
                     <form action="/admin/add-product?password=${ADMIN_PASSWORD}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input type="text" name="name" placeholder="Product Name" required class="p-2 border rounded">
                         <input type="number" name="price" placeholder="Price (₦)" required class="p-2 border rounded">
-                        <input type="text" name="category" placeholder="Category (e.g. Home & Solar)" required class="p-2 border rounded">
+                        <input type="text" name="category" placeholder="Category (e.g. Phones)" required class="p-2 border rounded">
                         <input type="file" name="imageFile" accept="image/*" class="p-2 border rounded md:col-span-2">
                         <button type="submit" class="md:col-span-2 bg-indigo-600 text-white py-2 rounded font-semibold hover:bg-indigo-700">Add Product</button>
                     </form>
@@ -183,7 +183,7 @@ app.get('/admin', (req, res) => {
 
                 <!-- Products Table -->
                 <div class="bg-white p-6 rounded-xl shadow-md overflow-x-auto">
-                    <h2 class="text-xl font-bold mb-4 text-gray-800">Manage Products</h2>
+                    <h2 class="text-xl font-bold mb-4 text-gray-800">Manage Products (${(db.products || []).length} Total)</h2>
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700 text-sm">
