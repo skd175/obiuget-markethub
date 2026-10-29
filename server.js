@@ -12,10 +12,19 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
 
-// Home route - display products
+// Home route - display products with robust category filter
 app.get('/', (req, res) => {
     const db = getData();
-    res.render('index', { products: db.products });
+    const selectedCategory = req.query.category;
+    
+    let filteredProducts = db.products;
+    if (selectedCategory && selectedCategory !== 'All') {
+        filteredProducts = db.products.filter(p => 
+            p.category && p.category.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+        );
+    }
+
+    res.render('index', { products: filteredProducts, currentCategory: selectedCategory || 'All' });
 });
 
 // Checkout / Place order route
@@ -36,6 +45,42 @@ app.post('/order', (req, res) => {
     saveData(db);
 
     res.json({ success: true, message: "Order placed successfully!", orderId: newOrder.id });
+});
+
+// Admin Dashboard route
+app.get('/admin', (req, res) => {
+    const db = getData();
+    res.render('admin', { products: db.products, orders: db.orders });
+});
+
+// Add Product route
+app.post('/admin/add-product', (req, res) => {
+    const { name, price, category, image } = req.body;
+    const db = getData();
+
+    const newProduct = {
+        id: 'p_' + Date.now(),
+        name,
+        price: Number(price),
+        category: category.trim(),
+        image: image && image.trim() !== '' ? image : 'https://via.placeholder.com/150'
+    };
+
+    db.products.push(newProduct);
+    saveData(db);
+
+    res.redirect('/admin');
+});
+
+// Delete Order route
+app.post('/admin/delete-order/:id', (req, res) => {
+    const orderId = Number(req.params.id);
+    const db = getData();
+
+    db.orders = db.orders.filter(o => o.id !== orderId);
+    saveData(db);
+
+    res.redirect('/admin');
 });
 
 app.listen(PORT, () => {

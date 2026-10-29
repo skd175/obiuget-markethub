@@ -3,22 +3,27 @@ const path = require('path');
 
 const dbFile = path.join(__dirname, 'database.json');
 
-// Initialize database file if it doesn't exist
-if (!fs.existsSync(dbFile)) {
-    const initialData = {
-        products: [
-            { id: 1, name: "Fresh Jollof Rice & Chicken", price: 2500, category: "Meals", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8" },
-            { id: 2, name: "Spaghetti & Meatballs", price: 2000, category: "Meals", image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281244" },
-            { id: 3, name: "Cold Malt Drink (Can)", price: 600, category: "Drinks", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" }
-        ],
-        orders: []
-    };
-    fs.writeFileSync(dbFile, JSON.stringify(initialData, null, 2));
-}
-
 function getData() {
-    const data = fs.readFileSync(dbFile, 'utf8');
-    return JSON.parse(data);
+    if (!fs.existsSync(dbFile)) {
+        const initialData = {
+            products: [
+                { id: 'p1', name: 'Infinix Hot Phone', price: 85000, category: 'Phones', image: 'https://via.placeholder.com/150' },
+                { id: 'p2', name: 'Smart LED TV 32"', price: 120000, category: 'Electronics', image: 'https://via.placeholder.com/150' },
+                { id: 'p3', name: 'HP EliteBook Laptop', price: 150000, category: 'Computing', image: 'https://via.placeholder.com/150' },
+                { id: 'p4', name: 'Solar Inverter Kit', price: 250000, category: 'Home & Solar', image: 'https://via.placeholder.com/150' },
+                { id: 'p5', name: 'Jollof Rice & Chicken', price: 2500, category: 'Meals', image: 'https://via.placeholder.com/150' },
+                { id: 'p6', name: 'Cold Malt Drink', price: 600, category: 'Drinks', image: 'https://via.placeholder.com/150' }
+            ],
+            orders: []
+        };
+        fs.writeFileSync(dbFile, JSON.stringify(initialData, null, 2));
+    }
+    try {
+        const data = fs.readFileSync(dbFile, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        return { products: [], orders: [] };
+    }
 }
 
 function saveData(data) {
