@@ -3,64 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - ObiUgo MarketHub</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>ObiUgo Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <header>
-        <h1>🛠️ Admin Dashboard</h1>
-        <p>Manage products and view incoming customer orders</p>
-        <a href="/" style="color: white; text-decoration: underline; display: inline-block; margin-top: 0.5rem;">← Back to Store</a>
-    </header>
+<body class="bg-gray-100 pb-20">
 
-    <main class="container">
-        <!-- Add Product Section -->
-        <div class="cart-section" style="margin-bottom: 2rem;">
-            <h2>➕ Add New Product</h2>
-            <form action="/admin/add-product" method="POST">
-                <input type="text" name="name" placeholder="Product Name" required>
-                <input type="number" name="price" placeholder="Price (₦)" required>
-                <select name="category" required style="width: 100%; padding: 0.7rem; margin: 0.5rem 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                    <option value="Phones">Phones</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Computing">Computing</option>
-                    <option value="Home & Solar">Home & Solar</option>
-                    <option value="Beauty">Beauty</option>
-                    <option value="Meals">Meals</option>
-                    <option value="Drinks">Drinks</option>
-                </select>
-                <input type="text" name="image" placeholder="Image URL (optional)">
-                <button type="submit" style="background: #007bff; margin-top: 0.5rem;">Add Product</button>
-            </form>
+    <!-- Admin Header -->
+    <div class="bg-gray-900 text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center">
+        <div>
+            <h1 class="text-sm font-bold">🔐 ObiUgo Secure Admin</h1>
+            <p class="text-[10px] text-gray-400">Restricted Access Control</p>
+        </div>
+        <a href="/" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold shadow">View Storefront</a>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="p-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm mb-4">
+            <h2 class="text-base font-bold text-gray-800">Inventory Management</h2>
+            <p class="text-xs text-gray-500 mt-0.5">Total active products: <span class="font-bold text-indigo-600"><%= typeof products !== 'undefined' ? products.length : 0 %></span></p>
         </div>
 
-        <!-- Orders Section -->
-        <div class="cart-section">
-            <h2>📦 Customer Orders (<%= orders.length %>)</h2>
-            <% if (orders.length === 0) { %>
-                <p class="empty-cart-msg">No orders received yet.</p>
-            <% } else { %>
-                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
-                    <% orders.forEach(order => { %>
-                        <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; border: 1px solid #ddd;">
-                            <p><strong>Order ID:</strong> <%= order.id %></p>
-                            <p><strong>Customer:</strong> <%= order.customerName %> (<%= order.phone %>)</p>
-                            <p><strong>Address:</strong> <%= order.address %></p>
-                            <p><strong>Date:</strong> <%= new Date(order.date).toLocaleString() %></p>
-                            <p><strong>Items:</strong></p>
-                            <ul style="margin: 0.3rem 0; padding-left: 1.2rem;">
-                                <% order.items.forEach(item => { %>
-                                    <li><%= item.name %> (x<%= item.quantity %>) - ₦<%= (item.price * item.quantity).toLocaleString() %></li>
-                                <% }) %>
-                            </ul>
-                            <form action="/admin/delete-order/<%= order.id %>" method="POST" style="margin-top: 0.8rem;">
-                                <button type="submit" style="background: #dc3545; padding: 0.4rem 0.8rem; width: auto;">Mark as Completed / Delete</button>
-                            </form>
+        <div class="bg-white rounded-2xl p-4 shadow-sm">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Loaded Products List</h3>
+            <div class="space-y-2">
+                <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
+                    <% products.forEach((product, index) => { %>
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded-xl border border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <img src="<%= product.image || '' %>" alt="" class="w-10 h-10 object-cover rounded-lg bg-gray-200">
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-800 line-clamp-1"><%= product.name || 'Unnamed' %></h4>
+                                    <p class="text-[11px] text-indigo-600 font-semibold">₦<%= Number(product.price || 0).toLocaleString() %></p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-gray-200 text-gray-700 px-2 py-1 rounded-md font-medium"><%= product.category || 'General' %></span>
                         </div>
                     <% }) %>
-                </div>
-            <% } %>
+                <% } else { %>
+                    <p class="text-center text-gray-400 text-xs py-4">No products found in database.</p>
+                <% } %>
+            </div>
         </div>
-    </main>
+    </div>
+
 </body>
 </html>
