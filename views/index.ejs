@@ -10,17 +10,18 @@
 <body class="bg-gray-50 pb-20">
 
     <!-- Top Bar / Search -->
-    <div class="sticky top-0 z-50 bg-white shadow-sm p-3 flex items-center justify-between gap-3">
-        <div class="relative flex-1">
-            <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
-            <input type="text" id="searchInput" placeholder="Search 100 products on ObiUgo..." class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <div class="sticky top-0 z-50 bg-white shadow-sm p-3 flex items-center justify-between gap-2">
+        <div class="relative flex-1 flex items-center bg-gray-100 rounded-full px-3 py-1">
+            <i class="fa fa-search text-gray-400 mr-2"></i>
+            <input type="text" id="searchInput" placeholder="Search products..." class="w-full bg-transparent text-sm focus:outline-none py-1">
+            <button id="searchBtn" class="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-semibold ml-1">Search</button>
         </div>
-        <a href="/admin?password=obiugo2026" class="bg-indigo-600 text-white px-4 py-2 rounded-full text-xs font-semibold shadow">Admin</a>
+        <a href="/admin?password=obiugo2026" class="bg-gray-800 text-white px-3 py-2 rounded-full text-xs font-semibold shadow">Admin</a>
     </div>
 
     <!-- Store Header Banner -->
     <div class="p-4">
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-5 text-white shadow-lg">
             <h1 class="text-xl font-bold">Official ObiUgo Verified Store</h1>
             <p class="text-xs opacity-90 mt-1">Awka & Igbariam, Anambra State • Fast Delivery</p>
         </div>
@@ -63,20 +64,21 @@
                 <% }) %>
             <% } else { %>
                 <div class="col-span-2 md:col-span-4 text-center py-10 text-gray-500 text-sm">
-                    No products found in this category.
+                    No products found.
                 </div>
             <% } %>
         </div>
     </div>
 
-    <!-- Live Search & Filter Script -->
+    <!-- Search Execution Script -->
     <script>
         const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
         const productCards = document.querySelectorAll('.product-card');
         const productCount = document.getElementById('productCount');
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase().trim();
+        function performSearch() {
+            const term = searchInput.value.toLowerCase().trim();
             let visibleCount = 0;
 
             productCards.forEach(card => {
@@ -93,6 +95,15 @@
 
             if (productCount) {
                 productCount.textContent = visibleCount;
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            } else {
+                performSearch(); // Live filter as you type too!
             }
         });
     </script>
