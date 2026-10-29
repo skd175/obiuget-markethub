@@ -2,11 +2,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer');
 const { getData, saveData } = require('./models/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'obiugo2026';
+
+// Set up storage for uploaded product images
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, 'public', 'uploads'));
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'prod_' + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -15,6 +27,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+
+// Ensure uploads directory exists
+const fs = require('fs');
+const uploadDir = path.join(__dirname, 'public', 'uploads');
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Home route
 app.get('/', (req, res) => {
@@ -51,7 +70,7 @@ app.post('/order', (req, res) => {
     res.json({ success: true, message: "Order placed successfully!", orderId: newOrder.id });
 });
 
-// Admin Route with Password Gate & Built-in Dashboard UI
+// Admin Route with Password Gate & Dashboard UI
 app.get('/admin', (req, res) => {
     const password = req.query.password;
     
@@ -83,13 +102,12 @@ app.get('/admin', (req, res) => {
 
     const db = getData();
     
-    // Render an inline secure dashboard to prevent view-loading errors
     let productsHtml = db.products.map(p => `
         <tr class="border-b">
             <td class="p-3"><img src="${p.image}" class="w-12 h-12 object-cover rounded"></td>
             <td class="p-3 font-medium">${p.name}</td>
-            <td class="p-3">₦${p.price.toLocaleString()}</td>
-            <td class="p-3">${p.category}</td>
+            <td class="p-3">₦${Number(p.price).toLocaleString()}</td>
+            <td class="p-3">${p.category || 'General'}</td>
         </tr>
     `).join('');
 
@@ -130,11 +148,11 @@ app.get('/admin', (req, res) => {
                 <!-- Add Product Form -->
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <h2 class="text-xl font-bold mb-4 text-gray-800">Add New Product</h2>
-                    <form action="/admin/add-product?password=${ADMIN_PASSWORD}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <form action="/admin/add-product?password=${ADMIN_PASSWORD}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input type="text" name="name" placeholder="Product Name" required class="p-2 border rounded">
                         <input type="number" name="price" placeholder="Price (₦)" required class="p-2 border rounded">
-                        <input type="text" name="category" placeholder="Category (e.g. Phones, Electronics)" required class="p-2 border rounded">
-                        <input type="text" name="image" placeholder="Image URL" class="p-2 border rounded">
+                        <input type="text" name="category" placeholder="Category (e.g. Power, Electronics)" required class="p-2 border rounded">
+                        <input type="file" name="imageFile" accept="image/*" class="p-2 border rounded md:col-span-2">
                         <button type="submit" class="md:col-span-2 bg-indigo-600 text-white py-2 rounded font-semibold hover:bg-indigo-700">Add Product</button>
                     </form>
                 </div>
@@ -181,20 +199,25 @@ app.get('/admin', (req, res) => {
     `);
 });
 
-// Add Product route
-app.post('/admin/add-product', (req, res) => {
+// Add Product route with Multer handling
+app.post('/admin/add-product', upload.single('imageFile'), (req, res) => {
     const password = req.query.password;
     if (password !== ADMIN_PASSWORD) return res.status(403).send("Unauthorized");
 
-    const { name, price, category, image } = req.body;
+    const { name, price, category } = req.body;
     const db = getData();
+
+    let imagePath = 'https://via.placeholder.com/150';
+    if (req.file) {
+        imagePath = '/uploads/' + req.file.filename;
+    }
 
     const newProduct = {
         id: 'p_' + Date.now(),
         name,
         price: Number(price),
-        category: category.trim(),
-        image: image && image.trim() !== '' ? image : 'https://via.placeholder.com/150'
+        category: category ? category.trim() : 'General',
+        image: imagePath
     };
 
     db.products.push(newProduct);
